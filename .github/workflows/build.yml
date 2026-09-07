@@ -3,12 +3,14 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-24.04-arm
-    container: python:3.12-alpine
     steps:
-      - run: apk add --no-cache gcc g++ make cmake git linux-headers nodejs
-      - run: mkdir -p /out
-      - run: pip wheel sentencepiece --no-deps -w /out
+      - run: mkdir -p out
+      - run: |
+          docker run --rm -v ${{ github.workspace }}/out:/out python:3.12-alpine sh -c "
+            apk add --no-cache gcc g++ make cmake git linux-headers &&
+            pip wheel sentencepiece --no-deps -w /out
+          "
       - uses: actions/upload-artifact@v4
         with:
           name: sentencepiece-wheel
-          path: /out/*.whl
+          path: out/*.whl
