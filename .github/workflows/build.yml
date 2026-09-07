@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     container: python:3.12-alpine
     steps:
-      - run: apk add --no-cache gcc g++ make cmake git linux-headers
+      - run: apk add --no-cache gcc g++ make cmake git linux-headers nodejs
       - run: mkdir -p /out
       - run: pip wheel sentencepiece --no-deps -w /out
       - uses: actions/upload-artifact@v4
